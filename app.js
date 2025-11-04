@@ -2,30 +2,34 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQTJTebEBVZfUWQOjLVwvVXPLQBx5zgPlnwURl_GrjJpuX1VfVTD4OzkE2gg32IQHfHpEJbaS-ppG4/pub?gid=0&single=true&output=csv";
 
 async function cargarDatos() {
-  const res = await fetch(SHEET_URL);
-  const text = await res.text();
-  const rows = text.split("\n").map(r => r.split(","));
-  const headers = rows.shift();
-  
-  const data = rows.map(row => {
-    const obj = {};
-    headers.forEach((h, i) => obj[h.trim()] = row[i]?.trim());
-    return obj;
-  });
+  try {
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
 
-  mostrarDatos(data);
-  prepararFiltros(data);
+    // ✅ Acepta CSV con coma o punto y coma como separador
+    const rows = text.split("\n").map(r => r.split(/,|;/));
+    const headers = rows.shift().map(h => h.trim());
+
+    const data = rows.map(row => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = row[i]?.trim());
+      return obj;
+    });
+
+    prepararFiltros(data);
+    mostrarDatos(data);
+  } catch (err) {
+    console.error("Error al cargar los datos:", err);
+  }
 }
 
 function mostrarDatos(data) {
   const container = document.getElementById("content");
   const search = document.getElementById("search").value.toLowerCase();
-  const filtro = document.getElementById("filter").value;
 
   container.innerHTML = "";
 
   const filtrados = data.filter(d =>
-    (!filtro || d.Categoría === filtro) &&
     (d.Título?.toLowerCase().includes(search) ||
      d.Descripción?.toLowerCase().includes(search))
   );
@@ -47,7 +51,8 @@ function prepararFiltros(data) {
   const contenedor = document.getElementById("buttons");
   contenedor.innerHTML = "";
 
-  const categorias = [...new Set(data.map(d => d.Categoría))].sort();
+  // ✅ Filtra valores no definidos o vacíos
+  const categorias = [...new Set(data.map(d => d.Categoría).filter(Boolean))].sort();
   const todas = ["Todas", ...categorias];
 
   todas.forEach(cat => {
@@ -65,6 +70,7 @@ function prepararFiltros(data) {
   });
 }
 
-
 cargarDatos();
+
+
 
