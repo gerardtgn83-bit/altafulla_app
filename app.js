@@ -44,17 +44,28 @@ function mostrarDatos(data) {
 }
 
 function prepararFiltros(data) {
-  const filtro = document.getElementById("filter");
+  const contenedor = document.getElementById("buttons");
+  contenedor.innerHTML = "";
+
   const categorias = [...new Set(data.map(d => d.Categoría))].sort();
-  categorias.forEach(c => {
-    const option = document.createElement("option");
-    option.value = c;
-    option.textContent = c;
-    filtro.appendChild(option);
+  const todas = ["Todas", ...categorias];
+
+  todas.forEach(cat => {
+    const boton = document.createElement("button");
+    boton.textContent = cat;
+    boton.className = "filtro-boton";
+    boton.addEventListener("click", () => {
+      document.querySelectorAll(".filtro-boton").forEach(b => b.classList.remove("activo"));
+      boton.classList.add("activo");
+      mostrarDatos(
+        cat === "Todas" ? data : data.filter(d => d.Categoría === cat)
+      );
+    });
+    contenedor.appendChild(boton);
   });
 }
 
+
 document.getElementById("search").addEventListener("input", cargarDatos);
-document.getElementById("filter").addEventListener("change", cargarDatos);
 
 cargarDatos();

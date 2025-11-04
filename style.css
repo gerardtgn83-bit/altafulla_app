@@ -32,3 +32,32 @@ input, select {
   color: #0044cc;
   text-decoration: none;
 }
+
+#buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 20px;
+  justify-content: center;
+}
+
+.filtro-boton {
+  background: #e3e7ec;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.filtro-boton:hover {
+  background: #cfd8e2;
+}
+
+.filtro-boton.activo {
+  background: #003366;
+  color: white;
+  font-weight: bold;
+}
+
