@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OOMM - Altafulla App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Ordenances Municipals</h1>
+  <p>Selecciona una categoria:</p>
+
+  <div id="buttons"></div>
+
+  <script>
+    const subcategorias = [
+      {
+        nom: "Residus",
+        link: "https://docs.google.com/spreadsheets/d/ENLACE_RESIDUS/edit?usp=sharing"
+      },
+      {
+        nom: "Convivència",
+        link: "https://docs.google.com/spreadsheets/d/ENLACE_CONVIVENCIA/edit?usp=sharing"
+      },
+      {
+        nom: "Tinença d'Animals",
+        link: "https://docs.google.com/spreadsheets/d/ENLACE_ANIMALS/edit?usp=sharing"
+      },
+      {
+        nom: "OVP",
+        link: "https://docs.google.com/spreadsheets/d/ENLACE_OVP/edit?usp=sharing"
+      }
+    ];
+
+    const contenedor = document.getElementById("buttons");
+
+    subcategorias.forEach(cat => {
+      const boton = document.createElement("button");
+      boton.textContent = cat.nom;
+      boton.className = "filtro-boton";
+      boton.addEventListener("click", () => {
+        window.open(cat.link, "_blank");
+      });
+      contenedor.appendChild(boton);
+    });
+  </script>
+</body>
+</html>
