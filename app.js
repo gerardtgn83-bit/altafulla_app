@@ -66,6 +66,5 @@ function prepararFiltros(data) {
 }
 
 
-document.getElementById("search").addEventListener("input", cargarDatos);
-
 cargarDatos();
+
